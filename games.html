@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Games | St. John Youth Camp</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#3498db">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+
+  <style>
+    /* General Reset and Box-Sizing */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #f0f8ff, #e6f7ff);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      scroll-behavior: smooth; /* Smooth scrolling */
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 10px;
+      padding: 15px;
+      background: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      color: #3498db;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    input[type="radio"], input[type="text"] {
+      margin: 5px 0;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px; /* Increased padding for better touch */
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #3498db;
+      outline: none;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.6);
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    button {
+      display: block;
+      margin: 20px 0;
+      padding: 12px 18px; /* Larger padding for better touch */
+      background: linear-gradient(135deg, #ff00cc, #3333ff);
+      color: white;
+      border: none;
+      border-radius: 50px; /* Fully rounded corners */
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), 0 0 40px rgba(51, 51, 255, 0.5);
+      animation: glow 2s infinite alternate;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #3333ff, #ff00cc);
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(255, 0, 204, 0.8), 0 0 60px rgba(51, 51, 255, 0.8);
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), 0 0 40px rgba(51, 51, 255, 0.5);
+      }
+      100% {
+        box-shadow: 0 0 40px rgba(255, 0, 204, 0.8), 0 0 80px rgba(51, 51, 255, 0.8);
+      }
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 18px; /* Larger padding for better touch */
+      background: linear-gradient(135deg, #ff00cc, #3333ff);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px; /* Fully rounded corners */
+      text-align: center;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1rem;
+      width: 100%; /* Full width on small screens */
+      box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), 0 0 40px rgba(51, 51, 255, 0.5);
+      animation: glow 2s infinite alternate;
+    }
+
+    a:hover {
+      background: linear-gradient(135deg, #3333ff, #ff00cc);
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(255, 0, 204, 0.8), 0 0 60px rgba(51, 51, 255, 0.8);
+    }
+
+    .feedback {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .feedback.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .correct {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .incorrect {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      label {
+        font-size: 0.9rem;
+      }
+
+      input[type="text"], button {
+        font-size: 0.8rem;
+        padding: 10px; /* Adjusted padding */
+      }
+
+      a {
+        padding: 10px 15px;
+        font-size: 0.8rem;
+      }
+
+      .feedback {
+        font-size: 0.8rem;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Games and Challenges</h1>
+    <form id="gamesForm">
+      <h2>Day 1 Questions</h2>
+      <label for="q1_Paris">What is the capital of France?</label><br>
+      <input type="radio" id="q1_Paris" name="q1" value="Paris" required aria-label="Paris"> Paris<br>
+      <input type="radio" id="q1_London" name="q1" value="London" aria-label="London"> London<br>
+      <input type="radio" id="q1_Berlin" name="q1" value="Berlin" aria-label="Berlin"> Berlin<br>
+
+      <label for="q2">Who wrote "Romeo and Juliet"?</label><br>
+      <input type="text" id="q2" name="q2" required aria-label="Answer for question 2"><br>
+
+      <button type="submit">Submit Answers</button>
+    </form>
+
+    <div id="feedback" class="feedback" aria-live="polite"></div>
+
+    <a href="main.html" aria-label="Back to Main Page">Back to Main Page</a>
+  </div>
+
+  <!-- Register Service Worker for PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  </script>
+
+  <script>
+    document.getElementById("gamesForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const q1Answer = document.querySelector('input[name="q1"]:checked').value;
+      const q2Answer = document.querySelector('input[name="q2"]').value.trim().toLowerCase();
+
+      const correctQ1 = "Paris";
+      const correctQ2 = "william shakespeare";
+
+      const isQ1Correct = q1Answer === correctQ1;
+      const isQ2Correct = q2Answer === correctQ2;
+
+      const feedbackElement = document.getElementById("feedback");
+      feedbackElement.classList.remove("visible");
+      
+      setTimeout(() => {
+        if (isQ1Correct && isQ2Correct) {
+          feedbackElement.textContent = "Correct answers! Well done!";
+          feedbackElement.className = "feedback correct visible";
+        } else {
+          feedbackElement.textContent = "Some answers are incorrect. Please try again.";
+          feedbackElement.className = "feedback incorrect visible";
+        }
+      }, 10); // Small delay to trigger animation
+    });
+  </script>
+</body>
+</html>
