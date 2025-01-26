@@ -1,0 +1,16 @@
+[
+    {
+        "team": "team1",
+        "answers": [],
+        "score": 0,
+        "members": [],
+        "completed": false
+    },
+    {
+        "team": "team2",
+        "answers": [],
+        "score": 0,
+        "members": [],
+        "completed": false
+    }
+]
